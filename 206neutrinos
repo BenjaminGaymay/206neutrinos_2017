@@ -36,6 +36,12 @@ def kvadratisk(values, entry):
 	return sqrt((1 / values["n"]) * ((values["a"]**2 + values["sd"]**2) * (values["n"] - 1) + entry**2 ))
 
 
+def standardafvilgelse(values, entry):
+    """ standardafvilgelse """
+
+    return sqrt(values["k"]**2 - values["a"]**2)
+
+
 def calc(values, entry):
     """ Manage calc for neutrinos """
 
@@ -43,6 +49,7 @@ def calc(values, entry):
     values["k"] = kvadratisk(values, entry)
     values["a"] = aritmetisk(values, entry)
     values["h"] = harmonisk(values, entry)
+    values["sd"] = standardafvilgelse(values, entry)
     print("\tantal mãlinder :\t{}".format(values["n"]))
     print("\tstandardafvilgelse :\t{0:.2f}".format(values["sd"]))
     print("\taritmetisk gennemsnit :\t{0:.2f}".format(values["a"]))
