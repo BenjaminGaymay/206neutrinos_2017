@@ -1,0 +1,91 @@
+#!/usr/bin/env python3
+""" Neutrinos """
+
+import sys
+from math import sqrt
+
+
+def print_usage():
+    """ Print neutrinos usage """
+
+    print("""USAGE
+        ./206neutrinos n a h sd
+
+DESCRIPTION
+	n	number of values
+	a	arithmetic mean
+	h	harmonic mean
+	sd	stardard deviation""")
+
+
+def aritmetisk(values, entry):
+	""" aritmetisk gennemsnit """
+
+	return (values["a"] * (values["n"] - 1) + entry) / values["n"]
+
+
+def harmonisk(values, entry):
+	""" harmonisk gennemsnit """
+
+	return values["n"] / ((1 / values["h"]) * (values["n"] - 1) + 1 / entry)
+
+
+def kvadratisk(values, entry):
+	""" kvadratisk gennemsnit """
+
+	return sqrt((1 / values["n"]) * ((values["a"]**2 + values["sd"]**2) * (values["n"] - 1) + entry**2 ))
+
+
+def calc(values, entry):
+    """ Manage calc for neutrinos """
+
+    values["n"] = values["n"] + 1
+    values["k"] = kvadratisk(values, entry)
+    values["a"] = aritmetisk(values, entry)
+    values["h"] = harmonisk(values, entry)
+    print("\tantal mãlinder :\t{}".format(values["n"]))
+    print("\tstandardafvilgelse :\t{0:.2f}".format(values["sd"]))
+    print("\taritmetisk gennemsnit :\t{0:.2f}".format(values["a"]))
+    print("\tkvadratisk gennemsnit :\t{0:.2f}".format(values["k"]))
+    print("\tharmonisk gennemsnit :\t{0:.2f}".format(values["h"]))
+
+
+def loop(values):
+    """ Neutrinos loop """
+
+    while 1:
+        command = input("indtast din vaerdi : ")
+        if command == "ENDE":
+            return 0
+        try:
+            calc(values, int(command))
+        except ValueError:
+            print("Error: new entry must be an integer", file=sys.stderr)
+
+
+def neutrinos(argv):
+    """ Starting neutrinos """
+
+    if "-h" in argv:
+        print_usage()
+        return 0
+    elif len(argv) != 4:
+        print("Error: four arguments are required", file=sys.stderr)
+        return 84
+
+    try:
+        values = {
+            "n": int(argv[0]),
+            "a": float(argv[1]),
+            "h": float(argv[2]),
+            "sd": float(argv[3])
+        }
+    except ValueError:
+        print("Error: arguments must be integers", file=sys.stderr)
+        return 84
+
+    return loop(values)
+
+
+if __name__ == "__main__":
+    exit(neutrinos(sys.argv[1:]))
