@@ -54,7 +54,7 @@ def calc(values, entry):
     print("\tstandardafvilgelse :\t{0:.2f}".format(values["sd"]))
     print("\taritmetisk gennemsnit :\t{0:.2f}".format(values["a"]))
     print("\tkvadratisk gennemsnit :\t{0:.2f}".format(values["k"]))
-    print("\tharmonisk gennemsnit :\t{0:.2f}".format(values["h"]))
+    print("\tharmonisk gennemsnit :\t{0:.2f}\n".format(values["h"]))
 
 
 def loop(values):
@@ -88,8 +88,13 @@ def neutrinos(argv):
             "sd": float(argv[3])
         }
     except ValueError:
-        print("Error: arguments must be integers", file=sys.stderr)
+        print("Error: arguments must be numbers", file=sys.stderr)
         return 84
+
+    for value in values.values():
+        if value < 0:
+            print("Error: arguments must be positives", file=sys.stderr)
+            return 84
 
     return loop(values)
 
